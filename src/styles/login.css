@@ -1,0 +1,44 @@
+.loginForm{
+    margin: 20vh auto;
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 100%;
+    max-width: 25rem;
+    background-color: rgb(255, 252, 240);
+    padding: 2rem;
+    border-radius: 0.5rem;
+}
+
+.inputField{
+    width: 100%;
+    padding: 1rem;
+    border-radius: 0.3rem;
+    border: 0.1rem solid rgb(254, 246, 156);
+}
+
+.inputField:{
+    border: 0.1rem solid rgb(255, 243, 112);
+}
+
+#email{
+    
+}
+
+#password{
+    
+}
+
+.loginButton{
+    margin: 0 auto;
+    width: 100%;
+    padding: 0.5rem 1rem;
+    background-color: rgb(255, 243, 162);
+    border: 0px;
+    border-radius: 0.3rem;
+}
+
+.loginButton:hover{
+    background-color: rgb(255, 238, 128);
+}
+
