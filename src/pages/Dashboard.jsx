@@ -7,18 +7,18 @@ import '../styles/dashboard.css'
 import alertify from 'alertifyjs';
 import 'alertifyjs/build/css/alertify.css';
 import Select from 'react-select'
+import JSConfetti from 'js-confetti'
 
 // new NiceSelect(document.querySelector("select"), {searchable: true});
 // import customSelect from 'custom-select';
 // import 'custom-select/build/custom-select.css'
-
-alertify.set('notifier','position', 'top-center');
 
 export default function Dashboard(){
     // if (!user){
     //     navigate("/login")
     //     // alertify.notify('Logout Successful', 'success', 2, function(){  console.log('dismissed'); });
     // }
+    alertify.set('notifier','position', 'top-center');
     async function reset(){
         const dbUserRef = collection(db, "userData")
         const uData = await getDocs(dbUserRef)
@@ -37,7 +37,7 @@ export default function Dashboard(){
                     "guessMssg1" : "",
                     "guessUser1" : "",
                     "myMssg1" : "",
-                    "myUser1" : "none",
+                    "myUser1" : "",
                     "guessed1" : false,
                     "numGuess1" : 3
                 });
@@ -209,7 +209,12 @@ export default function Dashboard(){
     async function handleGuess1(e){
         e.preventDefault()
         if(userData.myUser1 === userData.localGuess1){
-            alertify.alert('Correct Guess You can view your invitation now');
+            const jsConfetti = new JSConfetti()
+            jsConfetti.addConfetti({
+                confettiSize : `${(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent))?4:6}`,
+                confettiNumber : 500
+             })
+            alertify.alert("Congrats", "Correct Guess You can view your invitation now");
             try {
                 const userD = doc(db, "userData", userData.id);
                 await updateDoc(userD, {
@@ -276,7 +281,7 @@ export default function Dashboard(){
         value : u[0],
         label : u[0],
         key : u[0],
-        isDisabled : u[1]
+        isDisabled : !(u[1])
     }))
 
     const allSelectUsers = allUsers.map(u => ({

@@ -15,11 +15,11 @@ export default function Login(){
         "email" : "",
         "password" : ""
     })
-
     const [user, loading] = useAuthState(auth);
     const navigate = useNavigate();
     React.useEffect(() => {
         if (loading) {
+            console.log("loading")
             return
         }
         if (user){
