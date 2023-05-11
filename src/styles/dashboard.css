@@ -3,6 +3,11 @@
     flex-direction: column;
     align-items: center;
     gap: 2rem;
+    padding: 1rem;
+}
+
+.userContainer{
+    margin-top: 5rem;
 }
 
 .container{
@@ -14,6 +19,8 @@
     gap: 1rem;
     width: 100%;
     max-width: 25rem;
+    border: 0.1px solid orange;
+    border-radius: 0.5rem;
 }
 
 .sendMessageContainer{
@@ -25,7 +32,7 @@
 }
 
 .textArea{
-    max-width: 22rem;
+    max-width: 20rem;
     min-width: 15rem;
     width: 20rem;
     max-height: 10rem;
@@ -38,6 +45,7 @@
 }
 
 .avatar{
+    margin-top: -4rem;
 }
 
 .username{
@@ -46,15 +54,33 @@
     padding: 0rem 1rem;
 }
 
-.button{
-    padding: 0.5rem 1rem;
-    background-color: rgb(255, 243, 162);
-    border: 0.1rem solid rgb(255, 227, 126);
-    border-radius: 0.3rem;
+.messageText{
+    text-align: center;
 }
 
-.button:hover{
-    background-color: rgb(255, 238, 128);
+.guessForm{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1rem;
+}
+
+.selectReciever{
+    min-width: 50%;
+    max-width: 90%;
+}
+
+.guessSelectContainer{
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.selectGuess{
+    width: 50%;
 }
 
 .inviteButton{

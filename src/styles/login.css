@@ -1,3 +1,7 @@
+.formContainer{
+    width: 100%;
+    padding: 1rem;
+}
 .loginForm{
     margin: 20vh auto;
     display: flex;
@@ -19,7 +23,7 @@
 
 .inputField:{
     border: 0.1rem solid rgb(255, 243, 112);
-}
+} 
 
 #email{
     
@@ -32,13 +36,5 @@
 .loginButton{
     margin: 0 auto;
     width: 100%;
-    padding: 0.5rem 1rem;
-    background-color: rgb(255, 243, 162);
-    border: 0px;
-    border-radius: 0.3rem;
-}
-
-.loginButton:hover{
-    background-color: rgb(255, 238, 128);
 }
 

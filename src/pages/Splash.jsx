@@ -5,12 +5,13 @@ import '../styles/splash.css'
 export default function Splash(){
     const navigate = useNavigate();
     function handleClick(){
-        navigate("/login");
+        navigate("/login"); 
     }
     return(
-        <div className = "splashContainer">
-            <h1>Splash Screen</h1>
-            <button onClick={handleClick}>Click to go to login screen</button>
+        <div className = "splashContainer" onClick={handleClick}>
+            <h1 className='welcomeText'>Welcome</h1>
+            <h2 className='farewellText'>Farewell 2k23</h2>
+            <p className='clickText'>Click to go to login screen</p>
         </div>
     )
 }

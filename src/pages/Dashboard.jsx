@@ -159,11 +159,11 @@ export default function Dashboard(){
     async function handleMsg1(e){
         e.preventDefault()
         if(userData.guessUser1 === ""){
-            alertify.notify('Choose a User', 'warning', 2, function(){  console.log('dismissed'); });
+            alertify.notify('Choose a User first', 'warning', 2, function(){  console.log('dismissed'); });
             return
         }
         else if(userData.guessMssg1 === ""){
-            alertify.notify('Empty Message', 'warning', 2, function(){  console.log('dismissed'); });
+            alertify.notify('Write a message', 'warning', 2, function(){  console.log('dismissed'); });
             return
         }
 
@@ -209,19 +209,21 @@ export default function Dashboard(){
     async function handleGuess1(e){
         e.preventDefault()
         if(userData.myUser1 === userData.localGuess1){
-            alert("correct guess")
+            alertify.alert('Correct Guess You can view your invitation now');
             try {
                 const userD = doc(db, "userData", userData.id);
                 await updateDoc(userD, {
                   "guessed1" : true
                 });
-                window.location.reload();
+                setUserData(prev => (
+                    {...prev, "guessed1" : true}
+                ))
               } catch (err) {
                 console.log(err);
             }
         }
         else{
-            alert("wrong guess")
+            alertify.notify('Wrong Guess', 'error', 2, function(){  console.log('dismissed'); });
             setUserData(prev => (
                 {...prev, "numGuess1" : prev.numGuess1 - 1}
             ))
@@ -292,8 +294,8 @@ export default function Dashboard(){
     */
     return(
         <div className='dashboardContainer'>
-            <h1 className='dashHeading'>Dashboard</h1>
-            <div className='container'>
+            {/* <h1 className='dashHeading'>Dashboard</h1> */}
+            <div className='container userContainer'>
                 <img 
                     src="https://vignette.wikia.nocookie.net/roblox-pet-ranch-simulator/images/a/a9/Coinss.png/revision/latest?cb=20190307131955" 
                     alt="champion profile"
@@ -305,17 +307,16 @@ export default function Dashboard(){
                     <button className="logoutButton button" onClick={handleLogout}>logout</button>
                 </div>
                 <form onSubmit={handleMsg1} className='sendMessageContainer'>
-                    {(userData.choose < 1) && <div className='recieverChoiceContainer'>
-                        <label htmlFor="guessUser1">Choose the person to message</label>
-                        <Select 
-                            id="guessUser1"
-                            value={{label : userData.guessUser1}}
-                            onChange={handleChangeSendSelect}
-                            name="guessUser1"
-                            className='selectReciever'
-                            options = {allOptionUsers}
-                        />
-                    </div>}
+                    {(userData.choose < 1) &&
+                    <Select 
+                        placeholder="choose"
+                        id="guessUser1"
+                        value={{label : userData.guessUser1}}
+                        onChange={handleChangeSendSelect}
+                        name="guessUser1"
+                        className='selectReciever'
+                        options = {allOptionUsers}
+                    />}
                     <div>
                         <label htmlFor="guessMssg1">
                             {(userData.choose >= 1) ? `Update Message to ${userData.guessUser1}`:
@@ -330,7 +331,8 @@ export default function Dashboard(){
                             onChange={handleChange}
                             className="textArea"
                             placeholder={`Write a Message to \
-${userData.guessUser1 ? userData.guessUser1 : "unknown"} That helps him Guess your name, make sure not to reveal too much`}
+${userData.guessUser1 ? userData.guessUser1 : "unknown"} That \
+helps him Guess your name and get an Invitation to the farewell, make sure not to reveal too much`}
                         />
                     </div>
                     <button className='button'>Send</button>
@@ -338,18 +340,21 @@ ${userData.guessUser1 ? userData.guessUser1 : "unknown"} That helps him Guess yo
             </div>
             <div className='container'>
                 <h2>Recieved Message</h2>
-                {userData.myMssg1 ? <p>{userData.myMssg1}</p> : <p>No messages recieved yet</p>}
+                {userData.myMssg1 ? <p className='messageText'>{userData.myMssg1}</p> : <p>No messages recieved yet</p>}
                 {(!userData.guessed1 && userData.myMssg1 && userData.numGuess1 != 0)  && 
-                <form onSubmit={handleGuess1}>
-                    <label htmlFor="guessMy1">Guess The sender</label>
-                    <Select
-                        id="localGuess1"
-                        Value={userData.localGuess1}
-                        onChange={handleChangeRecieveSelect}
-                        name="localGuess1"
-                        options = {allSelectUsers}
-                    />
-                    <p>{userData.numGuess1} tries remaining</p>
+                <form onSubmit={handleGuess1} className='guessForm'>
+                    <div className='guessSelectContainer'>
+                        <Select
+                            placeholder="guess"
+                            id="localGuess1"
+                            Value={userData.localGuess1}
+                            onChange={handleChangeRecieveSelect}
+                            name="localGuess1"
+                            options = {allSelectUsers}
+                            className='selectGuess'
+                        />
+                        <p className='tries'>{userData.numGuess1} tries remaining</p>
+                    </div>
                     <button className='button'>Guess</button>
                 </form>}
             </div>
