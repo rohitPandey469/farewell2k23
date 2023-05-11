@@ -26,8 +26,10 @@
 
 .textArea{
     max-width: 22rem;
+    min-width: 15rem;
     width: 20rem;
     max-height: 10rem;
+    min-height: 5rem;
     height: 6rem;
     background-color: rgb(255, 230, 195);
     border: 0.1rem solid rgb(255, 198, 151);

@@ -6,10 +6,19 @@ import { doc, addDoc, getDocs, updateDoc, collection } from 'firebase/firestore'
 import '../styles/dashboard.css'
 import alertify from 'alertifyjs';
 import 'alertifyjs/build/css/alertify.css';
+import Select from 'react-select'
+
+// new NiceSelect(document.querySelector("select"), {searchable: true});
+// import customSelect from 'custom-select';
+// import 'custom-select/build/custom-select.css'
 
 alertify.set('notifier','position', 'top-center');
 
 export default function Dashboard(){
+    // if (!user){
+    //     navigate("/login")
+    //     // alertify.notify('Logout Successful', 'success', 2, function(){  console.log('dismissed'); });
+    // }
     async function reset(){
         const dbUserRef = collection(db, "userData")
         const uData = await getDocs(dbUserRef)
@@ -28,7 +37,7 @@ export default function Dashboard(){
                     "guessMssg1" : "",
                     "guessUser1" : "",
                     "myMssg1" : "",
-                    "myUser1" : "",
+                    "myUser1" : "none",
                     "guessed1" : false,
                     "numGuess1" : 3
                 });
@@ -78,7 +87,8 @@ export default function Dashboard(){
             "localGuess1" : "",
         }
     )
-    const [allUsers, setAllUsers] = React.useState([["--choose--", true]])
+    // ["--choose--", true]
+    const [allUsers, setAllUsers] = React.useState([])
     
     const navigate = useNavigate();
 
@@ -139,6 +149,9 @@ export default function Dashboard(){
     }, [user])
 
     function handleLogout(){
+        if(!user){
+            navigate('/login')
+        }
         logout();
     }
 
@@ -231,6 +244,22 @@ export default function Dashboard(){
         }))
     }
 
+    function handleChangeSendSelect(event){
+        setUserData(prev => ({
+            ...prev,
+            'guessUser1' : event.value
+        }))
+        console.log(userData)
+    }
+
+    function handleChangeRecieveSelect(event){
+        setUserData(prev => ({
+            ...prev,
+            'localGuess1' : event.value
+        }))
+        console.log(userData)
+    }
+
     function getInvitation(){
         if(userData.guessed1){
             alert("you are invited")
@@ -241,14 +270,19 @@ export default function Dashboard(){
     }
 
     // map available users to display as a dropdown disable unavailable users
-    const allOptionUsers = allUsers.map(u => {
-        return (u[1] ? <option key={u[0]} value={u[0]}>{u[0]}</option> : 
-        <option disabled key={u[0]} value={u[0]}>{u[0]}</option>)
-    })
+    const allOptionUsers = allUsers.map(u => ({
+        value : u[0],
+        label : u[0],
+        key : u[0],
+        isDisabled : u[1]
+    }))
 
-    const allSelectUsers = allUsers.map(u => {
-        return <option key={u[0]} value={u[0]}>{u[0]}</option>
-    })
+    const allSelectUsers = allUsers.map(u => ({
+        value : u[0],
+        label : u[0],
+        key : u[0],
+    }))
+
     /*
     88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
     88                                                                                              88
@@ -273,15 +307,14 @@ export default function Dashboard(){
                 <form onSubmit={handleMsg1} className='sendMessageContainer'>
                     {(userData.choose < 1) && <div className='recieverChoiceContainer'>
                         <label htmlFor="guessUser1">Choose the person to message</label>
-                        <select 
+                        <Select 
                             id="guessUser1"
-                            value={userData.guessUser1}
-                            onChange={handleChange}
+                            value={{label : userData.guessUser1}}
+                            onChange={handleChangeSendSelect}
                             name="guessUser1"
                             className='selectReciever'
-                        >
-                            {allOptionUsers}
-                        </select>
+                            options = {allOptionUsers}
+                        />
                     </div>}
                     <div>
                         <label htmlFor="guessMssg1">
@@ -296,7 +329,8 @@ export default function Dashboard(){
                             value={userData.guessMssg1}
                             onChange={handleChange}
                             className="textArea"
-                            placeholder={`Write a Message to ${userData.username} That helps him Guess your name, make sure not to reveal too much`}
+                            placeholder={`Write a Message to \
+${userData.guessUser1 ? userData.guessUser1 : "unknown"} That helps him Guess your name, make sure not to reveal too much`}
                         />
                     </div>
                     <button className='button'>Send</button>
@@ -308,14 +342,13 @@ export default function Dashboard(){
                 {(!userData.guessed1 && userData.myMssg1 && userData.numGuess1 != 0)  && 
                 <form onSubmit={handleGuess1}>
                     <label htmlFor="guessMy1">Guess The sender</label>
-                    <select
+                    <Select
                         id="localGuess1"
-                        value={userData.localGuess1}
-                        onChange={handleChange}
+                        Value={userData.localGuess1}
+                        onChange={handleChangeRecieveSelect}
                         name="localGuess1"
-                    >
-                        {allSelectUsers}
-                    </select>
+                        options = {allSelectUsers}
+                    />
                     <p>{userData.numGuess1} tries remaining</p>
                     <button className='button'>Guess</button>
                 </form>}
