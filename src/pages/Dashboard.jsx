@@ -140,7 +140,7 @@ export default function Dashboard(){
                 else{
                     if(allUsers.indexOf(doc.data().username) === -1){
                         setAllUsers(prev => (
-                         [...prev, [doc.data().username, !doc.data().myUser1]]
+                            [...prev, [doc.data().username, !doc.data().myUser1]]
                         ))
                     }
                 }
@@ -180,6 +180,14 @@ export default function Dashboard(){
                 console.log(`${doc.data().username} ${userData.guessUser1}`)
                 if(doc.data().username === userData.guessUser1){
                     if(doc.data().myUser1){
+                        setAllUsers((prev) => {
+                            const temp = [...prev]
+                            for(let i=0; i<temp.length; ++i){
+                                if(temp[i][0] == doc.data().myUser1)
+                                    temp[i][1] = false
+                            }
+                            return [...temp]
+                        })
                         alertify.alert('User already selected', `Some one just messaged ${userData.username}
                         while you were busy typing your message please select a different user`);
                         return
@@ -300,15 +308,13 @@ export default function Dashboard(){
         label : u[0],
         key : u[0],
     }))
-
-    /*
-    88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
-    88                                                                                              88
-    88                                                                                              88
-    88                                                                                              88
-    88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
-    */
     return(
+
+/*
+-----------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------
+*/
         <div className='dashboardContainer'>
             {/* <h1 className='dashHeading'>Dashboard</h1> */}
             <div className='container userContainer'>
