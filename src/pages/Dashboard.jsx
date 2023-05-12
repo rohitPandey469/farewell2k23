@@ -95,6 +95,7 @@ export default function Dashboard(){
     //If the user logs out redirect to login page
     React.useEffect(() => {
         if(loading){
+            alertify.set('notifier','position', 'top-center');
             return;
         }
         if (!user){
@@ -167,6 +168,36 @@ export default function Dashboard(){
             return
         }
 
+        // Check if the selected user is already assigned if two people select a user at the same time and one
+        // sends the message first
+
+        // Update message of the other user
+        let id
+        try{
+            const UserRef = collection(db, "userData")
+            const uD = await getDocs(UserRef)
+            uD.forEach((doc) => {
+                console.log(`${doc.data().username} ${userData.guessUser1}`)
+                if(doc.data().username === userData.guessUser1){
+                    if(doc.data().myUser1){
+                        alertify.alert('User already selected', `Some one just messaged ${userData.username}
+                        while you were busy typing your message please select a different user`);
+                        return
+                    }
+                    id = doc.id
+                }
+            })
+        } catch (err) {
+            console.log(err);
+        }
+        const userG = doc(db, "userData", id);
+        await updateDoc(userG, {
+            "myMssg1" : userData.guessMssg1,
+            "myUser1" : userData.username
+        });
+        // window.location.reload();
+        alertify.notify('Message Sent', 'success', 2, function(){});
+
         // update first user assigned and sent message and choice value
         try {
             const userD = doc(db, "userData", userData.id);
@@ -183,26 +214,6 @@ export default function Dashboard(){
           } catch (err) {
             console.log(err);
         }
-        // Update message of the other user
-        let id
-        try{
-            const UserRef = collection(db, "userData")
-            const uD = await getDocs(UserRef)
-            uD.forEach((doc) => {
-                if(doc.data().username === userData.guessUser1){
-                    id = doc.id
-                }
-            })
-        } catch (err) {
-            console.log(err);
-        }
-        const userG = doc(db, "userData", id);
-        await updateDoc(userG, {
-            "myMssg1" : userData.guessMssg1,
-            "myUser1" : userData.username
-        });
-        // window.location.reload();
-        alertify.notify('Message Sent', 'success', 2, function(){});
     }
 
     // Handle submission of first guess
