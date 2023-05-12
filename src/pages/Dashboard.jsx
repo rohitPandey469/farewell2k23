@@ -3,73 +3,16 @@ import { useNavigate } from "react-router-dom";
 import { auth, db, logout} from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { doc, addDoc, getDocs, updateDoc, collection } from 'firebase/firestore'
+import {reset, addUsers} from '../database/dbOps'
 import '../styles/dashboard.css'
 import alertify from 'alertifyjs';
 import 'alertifyjs/build/css/alertify.css';
 import Select from 'react-select'
 import JSConfetti from 'js-confetti'
 
-// new NiceSelect(document.querySelector("select"), {searchable: true});
-// import customSelect from 'custom-select';
-// import 'custom-select/build/custom-select.css'
-
 export default function Dashboard(){
-    // if (!user){
-    //     navigate("/login")
-    //     // alertify.notify('Logout Successful', 'success', 2, function(){  console.log('dismissed'); });
-    // }
-    alertify.set('notifier','position', 'top-center');
-    async function reset(){
-        const dbUserRef = collection(db, "userData")
-        const uData = await getDocs(dbUserRef)
-        let usersId = []
-        // console.log(uData)
-        uData.forEach(doc => {
-            usersId.push(doc.id)
-        })
-        usersId.forEach(async (id) => {
-            // const [user] = useAuthState(auth);
-            // logInWithEmailAndPassword(`user${counter}@gmail.com`, `password${counter}`)
-            try {
-                const userD = doc(db, "userData", id);
-                await updateDoc(userD, {
-                    "choose" : 0,
-                    "guessMssg1" : "",
-                    "guessUser1" : "",
-                    "myMssg1" : "",
-                    "myUser1" : "",
-                    "guessed1" : false,
-                    "numGuess1" : 3
-                });
-            } catch (err) {
-                console.log(err);
-            }
-            // logout()
-        })
-    }
     // reset()
-
-    // async function addUsers(){
-    //     const dbUserRef = collection(db, "userData")
-    //     for(let i=1; i<=5; ++i){
-    //         try {
-    //             await addDoc(dbUserRef, {
-    //                 "choose" : 0,
-    //                 "guessMssg1" : "",
-    //                 "guessUser1" : "",
-    //                 "myMssg1" : "",
-    //                 "myUser1" : "",
-    //                 "guessed1" : false,
-    //                 "numGuess1" : 3,
-    //                 "uid":"",
-    //                 "username" : `user ${i}`
-    //             })
-    //           } catch (err) {
-    //             console.log(err);
-    //           }
-    //     }
-    // }
-
+    alertify.set('notifier','position', 'top-center');
     const [user, loading] = useAuthState(auth);
     const [userData, setUserData] = React.useState(
         {
@@ -87,9 +30,8 @@ export default function Dashboard(){
             "localGuess1" : "",
         }
     )
-    // ["--choose--", true]
+
     const [allUsers, setAllUsers] = React.useState([])
-    
     const navigate = useNavigate();
 
     //If the user logs out redirect to login page
@@ -111,42 +53,20 @@ export default function Dashboard(){
         }
         async function getUserData(){
             const dbUserRef = collection(db, "userData")
-            // for (let i=1; i<6; i++){
-            //     try {
-            //         await addDoc(dbUserRef, {
-            //           "username" : `user ${i}`,
-            //           "choose" : 0,
-            //           "guessMssg1" : "",
-            //           "guessMssg2" : "",
-            //           "guessUser1" : "",
-            //           "guessUser2" : "",
-            //           "myMssg1" : "",
-            //           "myMssg2" : "",
-            //           "myUser1" : "",
-            //           "myUser2" : "",
-            //           "uid" : ""
-            //         })
-            //     } catch (err) {
-            //         console.log(err);
-            //     }
-            // }
             const uData = await getDocs(dbUserRef)
-            // console.log(uData)
             uData.forEach(doc => {
                 if(doc.data().uid === user.uid){
                     setUserData({...doc.data(), "id" : doc.id})
-                    // console.log(doc.id)
                 }
                 else{
-                    if(allUsers.indexOf(doc.data().username) === -1){
-                        setAllUsers(prev => (
-                         [...prev, [doc.data().username, !doc.data().myUser1]]
-                        ))
-                    }
+                    setAllUsers(prev => (
+                        [...prev, [doc.data().username, !doc.data().myUser1]]
+                    ))
                 }
             })
         }
-        getUserData()
+        if(user)
+            getUserData()
     }, [user])
 
     function handleLogout(){
@@ -170,17 +90,26 @@ export default function Dashboard(){
 
         // Check if the selected user is already assigned if two people select a user at the same time and one
         // sends the message first
-
         // Update message of the other user
         let id
         try{
             const UserRef = collection(db, "userData")
             const uD = await getDocs(UserRef)
             uD.forEach((doc) => {
-                console.log(`${doc.data().username} ${userData.guessUser1}`)
                 if(doc.data().username === userData.guessUser1){
                     if(doc.data().myUser1){
-                        alertify.alert('User already selected', `Some one just messaged ${userData.username}
+                        setUserData(prev=>(
+                            {...prev, "guessUser1" : ""}
+                        ))
+                        setAllUsers((prev) => {
+                            const temp = [...prev]
+                            for(let i=0; i<temp.length; ++i){
+                                if(temp[i][0] == doc.data().username)
+                                    temp[i][1] = false
+                            }
+                            return [...temp]
+                        })
+                        alertify.alert('User already selected', `Some one just messaged ${userData.guessUser1}
                         while you were busy typing your message please select a different user`);
                         return
                     }
@@ -188,7 +117,7 @@ export default function Dashboard(){
                 }
             })
         } catch (err) {
-            console.log(err);
+            console.log(`Network Error ${err}`);
         }
         const userG = doc(db, "userData", id);
         await updateDoc(userG, {
@@ -212,7 +141,7 @@ export default function Dashboard(){
               "guessUser1" : userData.guessUser1
             });
           } catch (err) {
-            console.log(err);
+            console.log(`Network Error ${err}`);
         }
     }
 
@@ -235,7 +164,7 @@ export default function Dashboard(){
                     {...prev, "guessed1" : true}
                 ))
               } catch (err) {
-                console.log(err);
+                console.log(`Network Error ${err}`);
             }
         }
         else{
@@ -249,7 +178,7 @@ export default function Dashboard(){
                   "numGuess1" : userData.numGuess1 - 1
                 });
               } catch (err) {
-                console.log(err);
+                console.log(`Network Error ${err}`);
             }
         }
     }
@@ -300,15 +229,13 @@ export default function Dashboard(){
         label : u[0],
         key : u[0],
     }))
-
-    /*
-    88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
-    88                                                                                              88
-    88                                                                                              88
-    88                                                                                              88
-    88888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888888
-    */
     return(
+
+/*
+-----------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------
+-----------------------------------------------------------------------------------------------------------
+*/
         <div className='dashboardContainer'>
             {/* <h1 className='dashHeading'>Dashboard</h1> */}
             <div className='container userContainer'>
