@@ -4,27 +4,85 @@
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
     align-self: center;
-    gap: 1rem;
+    gap: 4rem;
     padding: 1rem;
 }
 
+.greetings-container{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 1rem;
+}
+
+.ncsLogo{
+    margin-top: 3rem;
+    width: 120px;
+    height: auto;
+}
+
 .welcomeText{
-    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    font-size: 4rem;
-    color: rgb(255, 188, 117);
+    margin-top: 1rem;
+    font-family: 'Caudex';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 45px;
+    text-transform: uppercase;
+    background: linear-gradient(180deg, #ECCE88 31.15%, #C8A368 42.71%, #C29C75 55.38%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 8px 18px 8px rgba(0, 0, 0, 0.25);
 }
 
 .farewellText{
-    font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 3rem;
-    color: rgb(255, 174, 88);
+    font-family: 'Caudex';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 4.375rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    background: linear-gradient(180deg, #DDBF86 31.15%, #A57B4C 55.38%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 8px 18px 8px rgba(0, 0, 0, 0.25);
     text-align: center;
 }
 
 .clickText{
+    position : absolute;
+    bottom: 2.5rem;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
-    font-size: 1rem;
+    font-size: 1.5rem;
     color: rgb(183, 183, 183);
+    opacity: 0.3;
+    text-align: center;
 }
+
+@media screen and (max-width: 900px) {
+    .welcomeText {
+      font-size: 2.5rem;
+    }
+    .farewellText{
+        font-size: 3.5rem;
+    }
+    .clickText{
+        bottom: 5rem;
+    }
+  }
+
+@media screen and (max-width: 480px) {
+    .welcomeText {
+      font-size: 2rem;
+    }
+    .farewellText{
+        font-size: 3rem;
+    }
+    .clickText{
+        bottom: 8rem;
+        width: 60vw;
+    }
+  }

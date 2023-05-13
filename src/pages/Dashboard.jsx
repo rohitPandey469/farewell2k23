@@ -5,7 +5,7 @@ import { useAuthState } from "react-firebase-hooks/auth";
 import { doc, addDoc, getDocs, updateDoc, collection } from 'firebase/firestore'
 import {reset, addUsers} from '../database/dbOps'
 import '../styles/dashboard.css'
-import alertify from 'alertifyjs';
+import alertify from 'alertifyjs'; 
 import 'alertifyjs/build/css/alertify.css';
 import Select from 'react-select'
 import JSConfetti from 'js-confetti'
