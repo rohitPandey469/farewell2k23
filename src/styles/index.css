@@ -1,3 +1,13 @@
+@font-face {
+  font-family: 'gilroy-bold';
+  src: url('../assets/fonts/Gilroy-ExtraBold.otf');
+}
+
+@font-face {
+  font-family: 'gilroy-light';
+  src: url('../assets/fonts/Gilroy-Light.otf');
+}
+
 body {
   background: url('../assets/bg.png');
   background-color: #28282e;
@@ -12,6 +22,8 @@ body {
   flex-direction: column;
   align-items: center;
   overflow-y: hidden;
+  /* color: white; */
+  font-family: gilroy-light;
 }
 
 /* @media screen and (max-width: 480px) {
@@ -21,25 +33,34 @@ body {
 } */
 
 label{
-  color: black;
+  color: white;
 }
 
-h1, h2{
+h1, h2, p{
   margin: 0;
   padding: 0;
-}
-
-button{
-  padding: 0.5rem 1rem;
-  background-color: rgb(255, 194, 161);
-  border: 0.1rem solid rgb(255, 144, 88);
-  border-radius: 0.3rem;
-}
-
-button:hover{
-  background-color: rgb(255, 142, 101);
+  color:antiquewhite;
 }
 
 *, *:before, *:after {
   box-sizing: border-box;
+}
+
+::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
+  color: rgb(188, 171, 148);
+  opacity: 1; /* Firefox */
+}
+
+:-ms-input-placeholder { /* Internet Explorer 10-11 */
+  color: rgb(188, 171, 148);
+}
+
+::-ms-input-placeholder { /* Microsoft Edge */
+  color: rgb(188, 171, 148);
+}
+
+.alertify-notifier .ajs-message.ajs-error{
+  color: #000000 !important;
+  background: rgba(217, 92, 92, 0,95);
+  text-shadow: -1px -1px 0 rgba(0, 0, 0, 0,5);
 }

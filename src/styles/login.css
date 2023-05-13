@@ -67,7 +67,10 @@
 }
 
 .loginButton{
-    width: 100%;
+    width: 20rem;
+    max-width: 80vw;
+    min-width: 10rem;
+    padding: 0.5rem;
     background: #42382B;
     border: 1px solid #A97B2B;
     backdrop-filter: blur(16px);

@@ -8,8 +8,9 @@ import 'alertifyjs/build/css/alertify.css';
 export default function Splash(){
     const navigate = useNavigate();
     React.useEffect(() => {
+        console.log("Finisged Loading page")
         alertify.set('notifier','position', 'bottom-center');
-        alertify.notify('Click anywhere to cntinue', 'success', 5, function(){  console.log('dismissed'); });
+        alertify.notify('Click anywhere to continue', 'success', 5, function(){  console.log('dismissed'); });
     }, [])
     function handleClick(){
         alertify.dismissAll();

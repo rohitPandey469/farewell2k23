@@ -10,6 +10,9 @@ import 'alertifyjs/build/css/alertify.css';
 import ncsLogo from '../assets/ncs-logo.png'
 
 export default function Login(){
+    React.useEffect(()=>{
+        console.log("finished loading page")
+    }, [])
     const [formData, setFormData] = React.useState({
         "email" : "",
         "password" : ""
