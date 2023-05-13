@@ -1,5 +1,5 @@
 .splashContainer{
-    height: 100%;
+    height: 100%; 
     width: 100%;
     display: flex;
     flex-direction: column;
@@ -7,6 +7,15 @@
     align-self: center;
     gap: 4rem;
     padding: 1rem;
+}
+
+.upperHalf{
+    height: 50vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    padding-top: 2rem;
 }
 
 .greetings-container{
@@ -18,13 +27,11 @@
 }
 
 .ncsLogo{
-    margin-top: 3rem;
     width: 120px;
     height: auto;
 }
 
 .welcomeText{
-    margin-top: 1rem;
     font-family: 'Caudex';
     font-style: normal;
     font-weight: 700;
@@ -52,7 +59,7 @@
     text-align: center;
 }
 
-.clickText{
+/* .clickText{
     position : absolute;
     bottom: 2.5rem;
     font-family: Verdana, Geneva, Tahoma, sans-serif;
@@ -60,7 +67,7 @@
     color: rgb(183, 183, 183);
     opacity: 0.3;
     text-align: center;
-}
+} */
 
 @media screen and (max-width: 900px) {
     .welcomeText {
@@ -69,10 +76,10 @@
     .farewellText{
         font-size: 3.5rem;
     }
-    .clickText{
+    /* .clickText{
         bottom: 5rem;
-    }
-  }
+    } */
+}
 
 @media screen and (max-width: 480px) {
     .welcomeText {
@@ -81,8 +88,8 @@
     .farewellText{
         font-size: 3rem;
     }
-    .clickText{
+    /* .clickText{
         bottom: 8rem;
         width: 60vw;
-    }
-  }
+    } */
+}

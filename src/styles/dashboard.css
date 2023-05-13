@@ -4,6 +4,7 @@
     align-items: center;
     gap: 2rem;
     padding: 1rem;
+    cursor: pointer;
 }
 
 .userContainer{
@@ -71,7 +72,7 @@
     max-width: 90%;
 }
 
-.guessSelectContainer{
+.guessSelectContainer{ 
     width: 100%;
     display: flex;
     align-items: center;
@@ -85,4 +86,10 @@
 
 .inviteButton{
     margin-bottom: 2rem;
+}
+
+@media screen and (max-width: 600px) {
+    .dashboardContainer{
+        overflow-y: scroll;
+    }
 }
