@@ -103,17 +103,17 @@ export default function Dashboard(){
             uD.forEach((doc) => {
                 if(doc.data().username === userData.guessUser1 && doc.data().myUser1 != userData.username){
                     if(doc.data().choose === 2){
-                        setUserData(prev=>(
-                            {...prev, "guessUser1" : ""}
-                        ))
-                        setAllUsers((prev) => {
-                            const temp = [...prev]
-                            for(let i=0; i<temp.length; ++i){
-                                if(temp[i][0] == doc.data().username)
-                                    temp[i][1] = true
-                            }
-                            return [...temp]
-                        })
+                        // setUserData(prev=>(
+                        //     {...prev, "guessUser1" : ""}
+                        // ))
+                        // setAllUsers((prev) => {
+                        //     const temp = [...prev]
+                        //     for(let i=0; i<temp.length; ++i){
+                        //         if(temp[i][0] == doc.data().username)
+                        //             temp[i][1] = true
+                        //     }
+                        //     return [...temp]
+                        // })
                         alertify.alert('User already selected', `${userData.guessUser1} has just recived 2 
                         messages please select a different user`);
                         window.location.reload();
