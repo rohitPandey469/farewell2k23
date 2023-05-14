@@ -8,6 +8,7 @@ import {reset, addUsers} from '../database/dbOps'
 
 export default function Splash(){
     // addUsers()
+    // reset()
     alertify.set('notifier','position', 'bottom-center');
     alertify.notify('Click anywhere to continue', 'success', 5, function(){  console.log('dismissed'); });
     const navigate = useNavigate();

@@ -55,7 +55,7 @@ async function reset(){
 
 async function addUsers(){
     const dbUserRef = collection(db, "userData")
-    for(let i=5; i<12; ++i){
+    for(let i=6; i<12; ++i){
         try {
             await addDoc(dbUserRef, {
                 "choose" : 0,

@@ -307,8 +307,9 @@ export default function Dashboard(){
         if(userData.myUser1 === userData.localGuess1){
             const jsConfetti = new JSConfetti()
             jsConfetti.addConfetti({
-                confettiSize : `${(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent))?4:6}`,
-                confettiNumber : 500
+                emojis : ["🌟", "💫"],
+                emojiSize : `${(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent))?50:100}`,
+                confettiNumber : 15
                 })
             alertify.alert("Congrats", "Correct Guess");
             try {
@@ -347,9 +348,10 @@ export default function Dashboard(){
         if(userData.myUser2 === userData.localGuess2){
             const jsConfetti = new JSConfetti()
             jsConfetti.addConfetti({
-                confettiSize : `${(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent))?4:6}`,
-                confettiNumber : 500
-             })
+                emojis : ["🌟", "💫"],
+                emojiSize : `${(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent))?100:200}`,
+                confettiNumber : 15
+                })
             alertify.alert("Congrats", "Correct Guess");
             try {
                 const userD = doc(db, "userData", userData.id);
