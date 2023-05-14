@@ -67,7 +67,7 @@ export default function Login(){
 
         <div className='formContainer'>
             <form className="loginForm" onSubmit={handleSubmit}>
-                <img className="ncsLogo" src={ncsLogo} alt="Nibble Computer Society Logo"/>
+                <a href="https://hackncs.in/"><img className="ncsLogo" src={ncsLogo} alt="Nibble Computer Society Logo"/></a>
                 <h1 className='loginWelcome'>Welcome</h1>
                 <div className='inputContainer'>
                     <input 

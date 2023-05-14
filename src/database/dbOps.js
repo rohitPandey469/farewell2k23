@@ -1,6 +1,21 @@
 import { db } from "../../firebase";
 import { doc, addDoc, getDocs, updateDoc, collection } from 'firebase/firestore'
 
+const names = [
+    "Kalpit Arya",
+    "Ayush Kumar",
+    "Shruti Agarwal",
+    "Anurag Srivastava",
+    "Ojuswi Rastogi",
+    "Vaibhav Shukla",
+    "Aditee Singh",
+    "Naved Akhtar",
+    "Mihir Sahai",
+    "Paarth Agarwal",
+    "Shivam Singh",
+    "Shrey Jain"
+]
+
 async function reset(){
     const dbUserRef = collection(db, "userData")
     const uData = await getDocs(dbUserRef)
@@ -40,7 +55,7 @@ async function reset(){
 
 async function addUsers(){
     const dbUserRef = collection(db, "userData")
-    for(let i=1; i<=5; ++i){
+    for(let i=5; i<12; ++i){
         try {
             await addDoc(dbUserRef, {
                 "choose" : 0,
@@ -48,6 +63,8 @@ async function addUsers(){
                 "guessMssg2" : "",
                 "guessUser1" : "",
                 "guessUser2" : "",
+                'sentGuess1' : false,
+                'sentGuess2' : false,
                 "myMssg1" : "",
                 "myMssg2" : "",
                 "myUser1" : "",
@@ -57,7 +74,7 @@ async function addUsers(){
                 "numGuess1" : 3,
                 "numGuess2" : 3,
                 "uid":"",
-                "username" : `user ${i}`
+                "username" : `${names[i]}`
             })
             } catch (err) {
             console.log(err);
@@ -67,5 +84,6 @@ async function addUsers(){
 
 export {
     reset,
-    addUsers
+    addUsers,
+    names
 }

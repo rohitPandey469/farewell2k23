@@ -3,20 +3,24 @@ import { useNavigate } from "react-router-dom";
 import { auth, db, logout} from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { doc, addDoc, getDocs, updateDoc, collection } from 'firebase/firestore'
-import {reset, addUsers} from '../database/dbOps'
+import {reset, addUsers, names} from '../database/dbOps'
 import '../styles/dashboard.css'
+
+import ncsLogo from '../assets/ncs-logo.png'
+import profile from '../assets/profile.png'
+
 import alertify from 'alertifyjs'; 
 import 'alertifyjs/build/css/alertify.css';
 import Select from 'react-select'
 import JSConfetti from 'js-confetti'
-import ncsLogo from '../assets/ncs-logo.png'
-import profile from '../assets/profile.png'
+
 // change
 export default function Dashboard(){
     React.useEffect(()=>{
         console.log("finished loading page")
     }, [])
     // reset()
+    // addUsers()
     alertify.set('notifier','position', 'top-center');
     const [user, loading] = useAuthState(auth);
     const [userData, setUserData] = React.useState(
@@ -449,14 +453,19 @@ export default function Dashboard(){
 */
         <div className='pageContainer'>
             <div className='logoContainer'>
+            <a href="https://hackncs.in/">
                 <img className="ncsLogo" src={ncsLogo} alt="Nibble Computer Society Logo"/>
+            </a>
             </div>
             <div className='dashboardContainer'>
                 <div className='rightContainer'>
                     <div className='container profileContainer'>
                         <img 
-                            src= {profile} 
-                            alt="champion profile"
+                            src= {`/profile/${(((userData.username).split(" "))[0]).toLowerCase()}.\
+${  ((userData.username === names[0]) || 
+    (userData.username === names[2]) || 
+    (userData.username === names[3])) ?"png":"jpg"}`}
+                            alt={userData.username}
                             className='avatar'
                         />
                         <p className='username'>{userData.username}</p>
@@ -530,8 +539,7 @@ export default function Dashboard(){
                                 onChange={handleChange}
                                 className="textArea"
                                 placeholder={`Write a Message to \
-${userData.guessUser1 ? userData.guessUser1 : "unknown"} That \
-helps him Guess your name and get an Invitation to the farewell, make sure not to reveal too much`}
+${userData.guessUser1 ? userData.guessUser1 : "unknown"}`}
                             />
                             <div className='selectButtonContainer'>
                                 {(!userData.sentGuess1) &&
@@ -550,7 +558,7 @@ helps him Guess your name and get an Invitation to the farewell, make sure not t
                             </div>
                         </div>
                     </form>
-                    <form onSubmit={handleMsg2} className='sendMessageContainer'>
+                    <form onSubmit={handleMsg2} className='sendMessageContainer mssgBottom'>
                         <div className='selectAnnounce'>
                             <label htmlFor="guessMssg2">
                                 {(userData.sentGuess2) ? `Update Message to ${userData.guessUser2}`:
@@ -565,8 +573,7 @@ helps him Guess your name and get an Invitation to the farewell, make sure not t
                                 onChange={handleChange}
                                 className="textArea"
                                 placeholder={`Write a Message to \
-${userData.guessUser2 ? userData.guessUser2 : "unknown"} That \
-helps him Guess your name and get an Invitation to the farewell, make sure not to reveal too much`}
+${userData.guessUser2 ? userData.guessUser2 : "unknown"}`}
                             />
                             <div className='selectButtonContainer'>
                                 {(!userData.sentGuess2) &&
