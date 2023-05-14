@@ -118,7 +118,7 @@ export default function Dashboard(){
                         const temp = [...prev]
                         for(let i=0; i<temp.length; ++i){
                             if(temp[i][0] === doc.data().username)
-                                temp[i][1] = false
+                                temp[i][1] = true
                         }
                         return [...temp]
                     })
@@ -204,96 +204,96 @@ export default function Dashboard(){
             return
         }
 
+        let blunder = false
+        const UserRef = collection(db, "userData")
+        const uD = await getDocs(UserRef)
+        uD.forEach((doc) => {
+            if(doc.data().username === userData.guessUser2 && doc.data().myUser1 != userData.username &&
+            doc.data().myUser2 != userData.username){
+                if(doc.data().choose === 2){
+                    blunder = true
+                    alertify.alert('User already selected', `${userData.guessUser2} has just recived 2 
+                    messages please select a different user`);
+                    setUserData(prev=>(
+                        {...prev, "guessUser2" : ""}
+                    ))
+                    setAllUsers((prev) => {
+                        const temp = [...prev]
+                        for(let i=0; i<temp.length; ++i){
+                            if(temp[i][0] === doc.data().username)
+                                temp[i][1] = true
+                        }
+                        return [...temp]
+                    })
+                    return
+                }
+            }
+        })
+
+        if(blunder){
+            return
+        }
+        let reciever = {
+            "id" : "",
+            "choose" : 0,
+            "myUser1" : "",
+            "myUser2" : ""
+        }
         try{
             const UserRef = collection(db, "userData")
             const uD = await getDocs(UserRef)
             uD.forEach((doc) => {
-                if(doc.data().username === userData.guessUser2 && doc.data().myUser1 != userData.username &&
-                doc.data().myUser2 != userData.username){
-                    if(doc.data().choose === 2){
-                        setUserData(prev=>(
-                            {...prev, "guessUser2" : ""}
-                        ))
-                        setAllUsers((prev) => {
-                            const temp = [...prev]
-                            for(let i=0; i<temp.length; ++i){
-                                if(temp[i][0] == doc.data().username)
-                                    temp[i][1] = false
-                            }
-                            return [...temp]
-                        })
-                        alertify.alert('User already selected', `${userData.guessUser1} has just recived 2 
-                        messages please select a different user`);
-                        return
-                    }
+                if(doc.data().username === userData.guessUser2){
+                    console.log(doc.data().myUser1)
+                    reciever.id = doc.id
+                    reciever.choose = doc.data().choose
+                    reciever.myUser1 = doc.data().myUser1
+                    reciever.myUser2 = doc.data().myUser2
                 }
             })
         } catch (err) {
             console.log(`Network Error ${err}`);
         }
-        if(userData.guessUser2){
-            let reciever = {
-                "id" : "",
-                "choose" : 0,
-                "myUser1" : "",
-                "myUser2" : ""
-            }
-            try{
-                const UserRef = collection(db, "userData")
-                const uD = await getDocs(UserRef)
-                uD.forEach((doc) => {
-                    if(doc.data().username === userData.guessUser2){
-                        console.log(doc.data().myUser1)
-                        reciever.id = doc.id
-                        reciever.choose = doc.data().choose
-                        reciever.myUser1 = doc.data().myUser1
-                        reciever.myUser2 = doc.data().myUser2
-                    }
-                })
-            } catch (err) {
-                console.log(`Network Error ${err}`);
-            }
-            const userG = doc(db, "userData", reciever.id);
-            console.log(reciever.myUser2)
-            console.log(userData.username)
-            if(reciever.myUser1 === userData.username){
-                await updateDoc(userG, {
-                    "myMssg1" : userData.guessMssg1,
-                });
-            }
-            else if(reciever.myUser2 === userData.username){
-                await updateDoc(userG, {
-                    "myMssg2" : userData.guessMssg1,
-                });
-            }
-            else{
-                await updateDoc(userG, {
-                    [reciever.myUser1?"myMssg2":"myMssg1"] : userData.guessMssg2,
-                    [reciever.myUser1?"myUser2":"myUser1"] : userData.username,
-                    "choose" : reciever.choose + 1
-                });
-            }
-            // window.location.reload();
-            alertify.notify('Message Sent', 'success', 2, function(){});
-    
-            // update first user assigned and sent message and choice value
-            try {
-                const userD = doc(db, "userData", userData.id);
-                setUserData(prev => (
-                    {...prev, 
-                        "guessMssg2" : userData.guessMssg2,
-                        "guessUser2" : userData.guessUser2,
-                        'sentGuess2' : true
-                    }
-                ))
-                await updateDoc(userD, {
-                  "guessMssg2" : userData.guessMssg2,
-                  "guessUser2" : userData.guessUser2,
-                  'sentGuess2' : true
-                });
-              } catch (err) {
-                console.log(`Network Error ${err}`);
-            }
+        const userG = doc(db, "userData", reciever.id);
+        console.log(reciever.myUser2)
+        console.log(userData.username)
+        if(reciever.myUser1 === userData.username){
+            await updateDoc(userG, {
+                "myMssg1" : userData.guessMssg1,
+            });
+        }
+        else if(reciever.myUser2 === userData.username){
+            await updateDoc(userG, {
+                "myMssg2" : userData.guessMssg1,
+            });
+        }
+        else{
+            await updateDoc(userG, {
+                [reciever.myUser1?"myMssg2":"myMssg1"] : userData.guessMssg2,
+                [reciever.myUser1?"myUser2":"myUser1"] : userData.username,
+                "choose" : reciever.choose + 1
+            });
+        }
+        // window.location.reload();
+        alertify.notify('Message Sent', 'success', 2, function(){});
+
+        // update first user assigned and sent message and choice value
+        try {
+            const userD = doc(db, "userData", userData.id);
+            setUserData(prev => (
+                {...prev, 
+                    "guessMssg2" : userData.guessMssg2,
+                    "guessUser2" : userData.guessUser2,
+                    'sentGuess2' : true
+                }
+            ))
+            await updateDoc(userD, {
+              "guessMssg2" : userData.guessMssg2,
+              "guessUser2" : userData.guessUser2,
+              'sentGuess2' : true
+            });
+          } catch (err) {
+            console.log(`Network Error ${err}`);
         }
     }
     
@@ -464,7 +464,7 @@ export default function Dashboard(){
                         <div className='inviteContainer'>
                             {(userData.guessed1 && userData.guessed2) && <button className="button inviteButton" onClick={getInvitation}>Invitation</button>}
                             {(userData.numGuess1 === 0 || userData.numGuess2 === 0) && 
-                            <p className="container notInvited">You failed to guess the sender</p>}
+                            <p className="container notInvited">You failed to guess both the senders</p>}
                         </div>
                     </div>
                     <div className='container recievedContainer'>

@@ -86,8 +86,7 @@
 }
 
 .loginButton:hover{
-    background-color: #4d4025;
-    cursor: pointer;
+    background-color: rgb(196, 158, 75);
 }
 
 @media screen and (max-width: 480px) {
