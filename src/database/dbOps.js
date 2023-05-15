@@ -20,13 +20,10 @@ async function reset(){
     const dbUserRef = collection(db, "userData")
     const uData = await getDocs(dbUserRef)
     let usersId = []
-    // console.log(uData)
     uData.forEach(doc => {
         usersId.push(doc.id)
     })
     usersId.forEach(async (id) => {
-        // const [user] = useAuthState(auth);
-        // logInWithEmailAndPassword(`user${counter}@gmail.com`, `password${counter}`)
         try {
             const userD = doc(db, "userData", id);
             await updateDoc(userD, {

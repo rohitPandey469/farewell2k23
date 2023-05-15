@@ -2,21 +2,24 @@ import React from 'react'
 import { useNavigate } from "react-router-dom";
 import '../styles/splash.css'
 import ncsLogo from '../assets/ncs-logo.png'
-import alertify from 'alertifyjs'; 
+import {toastif} from "../../firebase"
+import { ToastContainer, toast, Slide } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css'; 
 import 'alertifyjs/build/css/alertify.css';
 import {reset, addUsers} from '../database/dbOps'
 
 export default function Splash(){
     // addUsers()
     // reset()
-    alertify.set('notifier','position', 'bottom-center');
-    alertify.notify('Click anywhere to continue', 'success', 5, function(){  console.log('dismissed'); });
+    toast.info('Click anywhere to continue', {
+        ...toastif, position: "bottom-center"
+    });
     const navigate = useNavigate();
     React.useEffect(() => {
         console.log("Finisged Loading page")
     }, [])
     function handleClick(){
-        alertify.dismissAll();
+        toast.dismiss();
         navigate("/login"); 
     }
     return(
@@ -27,7 +30,21 @@ export default function Splash(){
 -----------------------------------------------------------------------------------------------------------
 */
 
-        <div className = "splashContainer" onClick={handleClick}>
+            <div className = "splashContainer" onClick={handleClick}>
+                <ToastContainer
+                    limit={1}
+                    transition={Slide}
+                    position="top-center"
+                    autoClose={2000}
+                    hideProgressBar
+                    newestOnTop={false}
+                    closeOnClick
+                    rtl={false}
+                    pauseOnFocusLoss
+                    draggable
+                    pauseOnHover
+                    theme="dark"
+                />
             <div className='upperHalf'>
                 <a href="https://hackncs.in/">
                     <img className="ncsLogo" src={ncsLogo} alt="Nibble Computer Society Logo"/>

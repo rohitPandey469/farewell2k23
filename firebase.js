@@ -6,13 +6,11 @@ import {
   signOut,
 } from "firebase/auth";
 
+import {toast, Slide } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import {
   getFirestore,
-//   query,
-//   getDocs,
-//   collection,
-//   where,
-//   addDoc,
 } from "firebase/firestore";
 
 import alertify from 'alertifyjs';
@@ -30,6 +28,18 @@ const firebaseConfig = {
     measurementId: "G-MWXDJQ0MKV"
 };
 
+const toastif = {
+  transition : Slide,
+  position: "top-center",
+  autoClose: 1000,
+  hideProgressBar: true,
+  closeOnClick: true,
+  pauseOnHover: true,
+  draggable: true,
+  progress: undefined,
+  theme: "dark",
+}
+
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
@@ -41,15 +51,26 @@ const logInWithEmailAndPassword = async (email, password) => {
       .catch(error => {
         switch(error.code) {
           case 'auth/user-not-found':
-            alertify.notify('User not found', 'error', 2, function(){  console.log('dismissed'); });
+            toast.error('User not found!!', {
+              toastif
+              });
             break;
           case 'auth/wrong-password':
-            alertify.notify('Wrong Password', 'error', 2, function(){  console.log('dismissed'); });
+            toast.error('Wrong passoword!', {
+              toastif
+              });
             break;
+          default: 
+            toast.error('No Internet', {
+              toastif
+            });
        }
      })
    }catch(err){
-      alert("Error : ", err);
+      toast.error('No Internet', {
+        toastif
+      });
+      console.log("Error : ", err);
    }
 };
 
@@ -62,4 +83,5 @@ export {
   db,
   logInWithEmailAndPassword,
   logout,
+  toastif
 };

@@ -1,30 +1,25 @@
 import React from 'react'
 import { useNavigate } from "react-router-dom";
-import { auth, db, logout} from "../../firebase";
+import { auth, db, logout, toastif} from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { doc, addDoc, getDocs, updateDoc, collection } from 'firebase/firestore'
-import {reset, addUsers, names} from '../database/dbOps'
+import { doc, getDocs, updateDoc, collection } from 'firebase/firestore'
+import {names} from "../database/dbOps"
 import {saveAs} from "file-saver";
 import '../styles/dashboard.css'
 
+import { ToastContainer, toast, Slide } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 import ncsLogo from '../assets/ncs-logo.png'
 import inviteCard from '../assets/invite.png'
-import profile from '../assets/profile.png'
 
-import alertify from 'alertifyjs';
-import 'alertifyjs/build/css/alertify.css';
 import Select from 'react-select'
 import JSConfetti from 'js-confetti'
 
-// change
 export default function Dashboard(){
     React.useEffect(()=>{
         console.log("finished loading page")
     }, [])
-    // reset()
-    // addUsers()
-    alertify.set('notifier','position', 'top-center');
-    const [user, loading] = useAuthState(auth);
     const [userData, setUserData] = React.useState(
         {
             "username" : "loading...",
@@ -55,14 +50,16 @@ export default function Dashboard(){
     const navigate = useNavigate();
 
     //If the user logs out redirect to login page
+    const [user, loading] = useAuthState(auth);
     React.useEffect(() => {
         if(loading){
-            alertify.set('notifier','position', 'top-center');
             return;
         }
         if (!user){
             navigate("/login")
-            alertify.notify('Logout Successful', 'success', 2, function(){  console.log('dismissed'); });
+            setTimeout(() => {toast.success('Logout Successful!', {
+                toastif
+                });}, 1)
         }
     }, [user]);
 
@@ -100,11 +97,15 @@ export default function Dashboard(){
     async function handleMsg1(e){
         e.preventDefault()
         if(userData.guessUser1 === ""){
-            alertify.notify('Choose a User first', 'warning', 2, function(){  console.log('dismissed'); });
+            toast.warn('Choose a User first!', {
+                toastif
+                });
             return
         }
         else if(userData.guessMssg1 === ""){
-            alertify.notify('Write a message', 'warning', 2, function(){  console.log('dismissed'); });
+            toast.warn('Write a message!', {
+                toastif
+                });
             return
         }
         let blunder = false
@@ -115,8 +116,10 @@ export default function Dashboard(){
             doc.data().myUser2 != userData.username){
                 if(doc.data().choose === 2){
                     blunder = true
-                    alertify.alert('User already selected', `${userData.guessUser1} has just recived 2 
-                    messages please select a different user`);
+                    toast.error(`${userData.guessUser1} has just recived 2 /
+/messages please select a different user`, {
+                        toastif
+                        });
                     setUserData(prev=>(
                         {...prev, "guessUser1" : ""}
                     ))
@@ -159,6 +162,7 @@ export default function Dashboard(){
         }
         const userG = doc(db, "userData", reciever.id);
         if(reciever.myUser1 === userData.username){
+            console.log(reciever.id)
             await updateDoc(userG, {
                 "myMssg1" : userData.guessMssg1,
             });
@@ -175,8 +179,9 @@ export default function Dashboard(){
                 "choose" : reciever.choose + 1
             });
         }
-        // window.location.reload();
-        alertify.notify('Message Sent', 'success', 2, function(){});
+        toast.success("Message Sent", {
+            toastif
+        });
 
         // update first user assigned and sent message and choice value
         try {
@@ -202,11 +207,15 @@ export default function Dashboard(){
     async function handleMsg2(e){
         e.preventDefault()
         if(userData.guessUser2 === ""){
-            alertify.notify('Choose a User first', 'warning', 2, function(){  console.log('dismissed'); });
+            toast.warn("Choose a User first!", {
+                toastif
+            });
             return
         }
         else if(userData.guessMssg2 === ""){
-            alertify.notify('Write a message', 'warning', 2, function(){  console.log('dismissed'); });
+            toast.warn("Write a message!", {
+                toastif
+            });
             return
         }
 
@@ -218,8 +227,10 @@ export default function Dashboard(){
             doc.data().myUser2 != userData.username){
                 if(doc.data().choose === 2){
                     blunder = true
-                    alertify.alert('User already selected', `${userData.guessUser2} has just recived 2 
-                    messages please select a different user`);
+                    toast.error(`${userData.guessUser1} has just recived 2 /
+/messages please select a different user`, {
+                        toastif
+                    });
                     setUserData(prev=>(
                         {...prev, "guessUser2" : ""}
                     ))
@@ -250,7 +261,6 @@ export default function Dashboard(){
             const uD = await getDocs(UserRef)
             uD.forEach((doc) => {
                 if(doc.data().username === userData.guessUser2){
-                    console.log(doc.data().myUser1)
                     reciever.id = doc.id
                     reciever.choose = doc.data().choose
                     reciever.myUser1 = doc.data().myUser1
@@ -261,16 +271,14 @@ export default function Dashboard(){
             console.log(`Network Error ${err}`);
         }
         const userG = doc(db, "userData", reciever.id);
-        console.log(reciever.myUser2)
-        console.log(userData.username)
         if(reciever.myUser1 === userData.username){
             await updateDoc(userG, {
-                "myMssg1" : userData.guessMssg1,
+                "myMssg1" : userData.guessMssg2,
             });
         }
         else if(reciever.myUser2 === userData.username){
             await updateDoc(userG, {
-                "myMssg2" : userData.guessMssg1,
+                "myMssg2" : userData.guessMssg2,
             });
         }
         else{
@@ -280,9 +288,10 @@ export default function Dashboard(){
                 "choose" : reciever.choose + 1
             });
         }
-        // window.location.reload();
-        alertify.notify('Message Sent', 'success', 2, function(){});
-
+        toast.success("Message Sent", {
+            toastif
+        });
+        
         // update first user assigned and sent message and choice value
         try {
             const userD = doc(db, "userData", userData.id);
@@ -316,7 +325,9 @@ export default function Dashboard(){
                 emojiSize : `${(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent))?50:100}`,
                 confettiNumber : 15
                 })
-            alertify.alert("Congrats", "Correct Guess");
+            toast.success("Correct Guess", {
+                toastif
+            });
             try {
                 const userD = doc(db, "userData", userData.id);
                 await updateDoc(userD, {
@@ -330,7 +341,9 @@ export default function Dashboard(){
             }
         }
         else{
-            alertify.notify('Wrong Guess', 'error', 2, function(){  console.log('dismissed'); });
+            toast.error("Wrong Guess", {
+                toastif
+            });
             setUserData(prev => (
                 {...prev, "numGuess1" : prev.numGuess1 - 1}
             ))
@@ -360,7 +373,10 @@ export default function Dashboard(){
                 emojiSize : `${(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent))?100:200}`,
                 confettiNumber : 15
                 })
-            alertify.alert("Congrats", "Correct Guess");
+            // alertify.alert("Congrats", "Correct Guess");
+            toast.success("Correct Guess", {
+                toastif
+            });
             try {
                 const userD = doc(db, "userData", userData.id);
                 await updateDoc(userD, {
@@ -374,7 +390,9 @@ export default function Dashboard(){
             }
         }
         else{
-            alertify.notify('Wrong Guess', 'error', 2, function(){  console.log('dismissed'); });
+            toast.error("Correct Guess", {
+                toastif
+            });
             setUserData(prev => (
                 {...prev, "numGuess2" : prev.numGuess2 - 1}
             ))
@@ -416,8 +434,17 @@ export default function Dashboard(){
         if(userData.guessed1){
             try{
                 saveAs(inviteCard, "Farewell2k23");
-                alertify.set('notifier','position', 'top-center');
-                alertify.notify('Invitation card downloaded', 'success', 2, function(){  console.log('dismissed'); });
+                toast.info("Invitation card downloaded", {
+                    transition : Slide,
+                    position: "top-center",
+                    autoClose: 1000,
+                    hideProgressBar: true,
+                    closeOnClick: true,
+                    pauseOnHover: true,
+                    draggable: true,
+                    progress: undefined,
+                    theme: "dark",
+                });
             }catch(err){
                 console.log(err)
             }
@@ -468,6 +495,20 @@ export default function Dashboard(){
 -----------------------------------------------------------------------------------------------------------
 */
         <div className='pageContainer'>
+            <ToastContainer
+                limit={1}
+                transition={Slide}
+                position="top-center"
+                autoClose={1000}
+                hideProgressBar
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+            />
             <div className='logoContainer'>
             <a href="https://hackncs.in/">
                 <img className="ncsLogo" src={ncsLogo} alt="Nibble Computer Society Logo"/>

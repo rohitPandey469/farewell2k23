@@ -1,16 +1,12 @@
 import React from 'react'
 import { useNavigate } from "react-router-dom";
-import { auth, logInWithEmailAndPassword} from "../../firebase";
-// import { db, logout} from "../../firebase";
-// import { doc, getDocs, updateDoc, collection } from 'firebase/firestore'
+import { auth, logInWithEmailAndPassword, toastif} from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import '../styles/login.css'
-import alertify from 'alertifyjs';
-import 'alertifyjs/build/css/alertify.css';
 import ncsLogo from '../assets/ncs-logo.png'
 
 import { ToastContainer, toast, Slide } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import 'react-toastify/dist/ReactToastify.css'; 
 
 export default function Login(){
     React.useEffect(()=>{
@@ -25,24 +21,13 @@ export default function Login(){
 
     React.useEffect(() => {
         if (loading) {
-            console.log("loading")
             return
         }
         if (user){
             navigate("/dashboard");
-            // alertify.set('notifier','position', 'top-center');
-            // alertify.notify('Login Successful', 'success', 2, function(){  console.log('dismissed'); });
-            toast.success('Empty Email field!', {
-                transition : Slide,
-                position: "top-center",
-                autoClose: 1000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
-            });
+            setTimeout(() => {toast.success('Login Successful', {
+                toastif
+            });}, 1)
         }
     }, [user, loading]);
 
@@ -58,39 +43,19 @@ export default function Login(){
 
     async function handleSubmit(e){
         e.preventDefault()
-        alertify.set('notifier','position', 'top-center');
         if(formData.email === ""){
-            // alertify.notify('Empty Email field', 'warning', 2, function(){  console.log('dismissed'); });
             toast.warn('Empty Email field!', {
-                transition : Slide,
-                position: "top-center",
-                autoClose: 1000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
+                toastif
                 });
             return
         }
         if(formData.password === ""){
-            // alertify.notify('Empty password field', 'warning', 2, function(){  console.log('dismissed'); });
             toast.warn('Empty Password field!', {
-                transition : Slide,
-                position: "top-center",
-                autoClose: 1000,
-                hideProgressBar: true,
-                closeOnClick: true,
-                pauseOnHover: true,
-                draggable: true,
-                progress: undefined,
-                theme: "dark",
+                toastif
                 });
             return
         }
         logInWithEmailAndPassword(formData.email, formData.password)
-        // logInWithEmailAndPassword(email, password)
     }
     
     return(
@@ -103,6 +68,7 @@ export default function Login(){
 
         <div className='formContainer'>
             <ToastContainer
+                limit={1}
                 transition={Slide}
                 position="top-center"
                 autoClose={1000}
