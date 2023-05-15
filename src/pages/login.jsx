@@ -9,6 +9,9 @@ import alertify from 'alertifyjs';
 import 'alertifyjs/build/css/alertify.css';
 import ncsLogo from '../assets/ncs-logo.png'
 
+import { ToastContainer, toast, Slide } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
 export default function Login(){
     React.useEffect(()=>{
         console.log("finished loading page")
@@ -27,8 +30,19 @@ export default function Login(){
         }
         if (user){
             navigate("/dashboard");
-            alertify.set('notifier','position', 'top-center');
-            alertify.notify('Login Successful', 'success', 2, function(){  console.log('dismissed'); });
+            // alertify.set('notifier','position', 'top-center');
+            // alertify.notify('Login Successful', 'success', 2, function(){  console.log('dismissed'); });
+            toast.success('Empty Email field!', {
+                transition : Slide,
+                position: "top-center",
+                autoClose: 1000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+            });
         }
     }, [user, loading]);
 
@@ -43,14 +57,36 @@ export default function Login(){
     }
 
     async function handleSubmit(e){
-        alertify.set('notifier','position', 'top-center');
         e.preventDefault()
+        alertify.set('notifier','position', 'top-center');
         if(formData.email === ""){
-            alertify.notify('Empty Email field', 'warning', 2, function(){  console.log('dismissed'); });
+            // alertify.notify('Empty Email field', 'warning', 2, function(){  console.log('dismissed'); });
+            toast.warn('Empty Email field!', {
+                transition : Slide,
+                position: "top-center",
+                autoClose: 1000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                });
             return
         }
         if(formData.password === ""){
-            alertify.notify('Empty password field', 'warning', 2, function(){  console.log('dismissed'); });
+            // alertify.notify('Empty password field', 'warning', 2, function(){  console.log('dismissed'); });
+            toast.warn('Empty Password field!', {
+                transition : Slide,
+                position: "top-center",
+                autoClose: 1000,
+                hideProgressBar: true,
+                closeOnClick: true,
+                pauseOnHover: true,
+                draggable: true,
+                progress: undefined,
+                theme: "dark",
+                });
             return
         }
         logInWithEmailAndPassword(formData.email, formData.password)
@@ -66,6 +102,19 @@ export default function Login(){
 */
 
         <div className='formContainer'>
+            <ToastContainer
+                transition={Slide}
+                position="top-center"
+                autoClose={1000}
+                hideProgressBar
+                newestOnTop={false}
+                closeOnClick
+                rtl={false}
+                pauseOnFocusLoss
+                draggable
+                pauseOnHover
+                theme="dark"
+            />
             <form className="loginForm" onSubmit={handleSubmit}>
                 <a href="https://hackncs.in/"><img className="ncsLogo" src={ncsLogo} alt="Nibble Computer Society Logo"/></a>
                 <h1 className='loginWelcome'>Welcome</h1>
