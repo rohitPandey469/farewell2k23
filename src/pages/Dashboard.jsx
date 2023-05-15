@@ -4,12 +4,14 @@ import { auth, db, logout} from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { doc, addDoc, getDocs, updateDoc, collection } from 'firebase/firestore'
 import {reset, addUsers, names} from '../database/dbOps'
+import {saveAs} from "file-saver";
 import '../styles/dashboard.css'
 
 import ncsLogo from '../assets/ncs-logo.png'
+import inviteCard from '../assets/invite.png'
 import profile from '../assets/profile.png'
 
-import alertify from 'alertifyjs'; 
+import alertify from 'alertifyjs';
 import 'alertifyjs/build/css/alertify.css';
 import Select from 'react-select'
 import JSConfetti from 'js-confetti'
@@ -304,6 +306,9 @@ export default function Dashboard(){
     // Handle submission of first guess
     async function handleGuess1(e){
         e.preventDefault()
+        if(!userData.localGuess1){
+            return
+        }
         if(userData.myUser1 === userData.localGuess1){
             const jsConfetti = new JSConfetti()
             jsConfetti.addConfetti({
@@ -343,6 +348,9 @@ export default function Dashboard(){
     // Handle submission of second guess
     async function handleGuess2(e){
         e.preventDefault()
+        if(!userData.localGuess2){
+            return
+        }
         console.log(userData.myUser2)
         console.log(userData.localGuess2)
         if(userData.myUser2 === userData.localGuess2){
@@ -406,7 +414,13 @@ export default function Dashboard(){
 
     function getInvitation(){
         if(userData.guessed1){
-            alertify.alert("invitaion", "you are invited")
+            try{
+                saveAs(inviteCard, "Farewell2k23");
+                alertify.set('notifier','position', 'top-center');
+                alertify.notify('Invitation card downloaded', 'success', 2, function(){  console.log('dismissed'); });
+            }catch(err){
+                console.log(err)
+            }
         }
         else{
             window.location.reload();
