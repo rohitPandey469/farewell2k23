@@ -158,6 +158,9 @@ export default function Dashboard(){
                 }
             })
         } catch (err) {
+            toast.error('No Internet', {
+                toastif
+            });
             console.log(`Network Error ${err}`);
         }
         const userG = doc(db, "userData", reciever.id);
@@ -199,6 +202,9 @@ export default function Dashboard(){
             'sentGuess1' : true
             });
         } catch (err) {
+            toast.error('No Internet', {
+                toastif
+            });
             console.log(`Network Error ${err}`);
         }
     }
@@ -268,6 +274,9 @@ export default function Dashboard(){
                 }
             })
         } catch (err) {
+            toast.error('No Internet', {
+                toastif
+            });
             console.log(`Network Error ${err}`);
         }
         const userG = doc(db, "userData", reciever.id);
@@ -308,6 +317,9 @@ export default function Dashboard(){
               'sentGuess2' : true
             });
           } catch (err) {
+            toast.error('No Internet', {
+                toastif
+            });
             console.log(`Network Error ${err}`);
         }
     }
@@ -322,7 +334,7 @@ export default function Dashboard(){
             const jsConfetti = new JSConfetti()
             jsConfetti.addConfetti({
                 emojis : ["🌟", "💫"],
-                emojiSize : `${(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent))?50:100}`,
+                emojiSize : `${(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent))?100:150}`,
                 confettiNumber : 15
                 })
             toast.success("Correct Guess", {
@@ -370,7 +382,7 @@ export default function Dashboard(){
             const jsConfetti = new JSConfetti()
             jsConfetti.addConfetti({
                 emojis : ["🌟", "💫"],
-                emojiSize : `${(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent))?100:200}`,
+                emojiSize : `${(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent))?100:150}`,
                 confettiNumber : 15
                 })
             // alertify.alert("Congrats", "Correct Guess");

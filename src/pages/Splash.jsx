@@ -12,7 +12,7 @@ export default function Splash(){
     // addUsers()
     // reset()
     toast.info('Click anywhere to continue', {
-        ...toastif, position: "bottom-center"
+        ...toastif, autoClose: 2000, position: "bottom-center"
     });
     const navigate = useNavigate();
     React.useEffect(() => {
@@ -35,7 +35,7 @@ export default function Splash(){
                     limit={1}
                     transition={Slide}
                     position="top-center"
-                    autoClose={2000}
+                    autoClose={4000}
                     hideProgressBar
                     newestOnTop={false}
                     closeOnClick
