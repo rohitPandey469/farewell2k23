@@ -1,22 +1,26 @@
 import React from 'react'
 import { useNavigate } from "react-router-dom";
-import { auth, db, logout, toastif} from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+// database imports
+import { auth, db, logout, toastif} from "../../firebase";
 import { doc, getDocs, updateDoc, collection } from 'firebase/firestore'
 import {names} from "../database/dbOps"
+//  Utility Library imports
 import {saveAs} from "file-saver";
-import '../styles/dashboard.css'
-
 import { ToastContainer, toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
-
-import ncsLogo from '../assets/ncs-logo.png'
-import inviteCard from '../assets/invite.png'
-
 import Select from 'react-select'
 import JSConfetti from 'js-confetti'
+// Assets
+import ncsLogo from '../assets/ncs-logo.png'
+import inviteCard from '../assets/invite.png'
+import '../styles/dashboard.css'
+
+import {reset, addUsers} from '../database/dbOps'
 
 export default function Dashboard(){
+    // addUsers()
+    // reset()
     React.useEffect(()=>{
         console.log("finished loading page")
     }, [])
@@ -63,24 +67,25 @@ export default function Dashboard(){
         }
     }, [user]);
 
+    async function getUserData(){
+        const dbUserRef = collection(db, "userData")
+        const uData = await getDocs(dbUserRef)
+        uData.forEach(doc => {
+            if(doc.data().uid === user.uid){
+                setUserData({...doc.data(), "id" : doc.id})
+            }
+            else{
+                setAllUsers(prev => (
+                    [...prev, [doc.data().username, (doc.data().choose === 2)]]
+                ))
+            }
+        })
+    }
+
     // Get data from firebase
     React.useEffect(() => {
         if(loading){
             return;
-        }
-        async function getUserData(){
-            const dbUserRef = collection(db, "userData")
-            const uData = await getDocs(dbUserRef)
-            uData.forEach(doc => {
-                if(doc.data().uid === user.uid){
-                    setUserData({...doc.data(), "id" : doc.id})
-                }
-                else{
-                    setAllUsers(prev => (
-                        [...prev, [doc.data().username, (doc.data().choose === 2)]]
-                    ))
-                }
-            })
         }
         if(user)
             getUserData()
@@ -112,6 +117,13 @@ export default function Dashboard(){
         const UserRef = collection(db, "userData")
         const uD = await getDocs(UserRef)
         uD.forEach((doc) => {
+            if(doc.data().username === userData.username){
+                if(doc.data().sentGuess1 && doc.data().guessUser1 != userData.guessUser1){
+                    blunder = true
+                }
+            }
+        })
+        uD.forEach((doc) => {
             if(doc.data().username === userData.guessUser1 && doc.data().myUser1 != userData.username &&
             doc.data().myUser2 != userData.username){
                 if(doc.data().choose === 2){
@@ -137,6 +149,7 @@ export default function Dashboard(){
         })
 
         if(blunder){
+            document.location.reload()
             return
         }
 
@@ -229,6 +242,13 @@ export default function Dashboard(){
         const UserRef = collection(db, "userData")
         const uD = await getDocs(UserRef)
         uD.forEach((doc) => {
+            if(doc.data().username === userData.username){
+                if(doc.data().sentGuess2 && doc.data().guessUser2 != userData.guessUser2){
+                    blunder = true
+                }
+            }
+        })
+        uD.forEach((doc) => {
             if(doc.data().username === userData.guessUser2 && doc.data().myUser1 != userData.username &&
             doc.data().myUser2 != userData.username){
                 if(doc.data().choose === 2){
@@ -254,6 +274,7 @@ export default function Dashboard(){
         })
 
         if(blunder){
+            document.location.reload()
             return
         }
         let reciever = {
@@ -330,6 +351,20 @@ export default function Dashboard(){
         if(!userData.localGuess1){
             return
         }
+        let blunder = false
+        const UserRef = collection(db, "userData")
+        const uD = await getDocs(UserRef)
+        uD.forEach((doc) => {
+            if(doc.data().username === userData.username){
+                if(doc.data().numGuess1 != userData.numGuess1 || doc.data().guessed1){
+                    blunder = true
+                }
+            }
+        })
+        if(blunder){
+            window.location.reload()
+            return
+        }
         if(userData.myUser1 === userData.localGuess1){
             const jsConfetti = new JSConfetti()
             jsConfetti.addConfetti({
@@ -376,8 +411,20 @@ export default function Dashboard(){
         if(!userData.localGuess2){
             return
         }
-        console.log(userData.myUser2)
-        console.log(userData.localGuess2)
+        let blunder = false
+        const UserRef = collection(db, "userData")
+        const uD = await getDocs(UserRef)
+        uD.forEach((doc) => {
+            if(doc.data().username === userData.username || doc.data().guessed2){
+                if(doc.data().numGuess2 != userData.numGuess2){
+                    blunder = true
+                }
+            }
+        })
+        if(blunder){
+            window.location.reload()
+            return
+        }
         if(userData.myUser2 === userData.localGuess2){
             const jsConfetti = new JSConfetti()
             jsConfetti.addConfetti({
