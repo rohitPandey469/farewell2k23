@@ -3,6 +3,7 @@ import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Splash from './pages/Splash'
 import Login from './pages/login'
 import Dashboard from './pages/Dashboard'
+import { useRoutes } from 'react-router-dom';
 import './styles/App.css'
 
 function App() {

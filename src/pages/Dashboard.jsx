@@ -149,7 +149,7 @@ export default function Dashboard(){
         })
 
         if(blunder){
-            document.location.reload()
+            // document.location.reload()
             return
         }
 
