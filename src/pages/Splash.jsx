@@ -4,13 +4,25 @@ import '../styles/splash.css'
 import ncsLogo from '../assets/ncs-logo.png'
 import {toastif} from "../../firebase"
 import { ToastContainer, toast, Slide } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css'; 
+import 'react-toastify/dist/ReactToastify.css';
 import 'alertifyjs/build/css/alertify.css';
-import {reset, addUsers} from '../database/dbOps'
+// import {reset, addUsers} from '../database/dbOps'
 
 export default function Splash(){
-    // addUsers()
     // reset()
+    const audio = new Audio(
+        "/award.mp3"
+    );
+
+    audio.addEventListener('ended', function () {
+        audio.currentTime = 0;
+        audio.play();
+    }, false);
+
+    function start(){
+        audio.play();
+    }
+    
     toast.info('Click anywhere to continue', {
         ...toastif, autoClose: 2000, position: "bottom-center"
     });
@@ -19,6 +31,7 @@ export default function Splash(){
         console.log("Finisged Loading page")
     }, [])
     function handleClick(){
+        start()
         toast.dismiss();
         navigate("/login"); 
     }

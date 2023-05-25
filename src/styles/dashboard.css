@@ -9,12 +9,6 @@
 }
 
 .pageContainer{
-    /* background: url('../assets/dashboardBg2.png');
-    background-color: #28282e;
-    background-size: cover;
-    background-repeat: no-repeat;
-    background-position: center;
-    background-attachment: fixed; */
     padding: 1rem;
     width: 100%;
     height: 100%;
@@ -218,10 +212,109 @@
     background-color: rgb(196, 158, 75);
 }
 
+.inviteContainer{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
 .inviteButton{
-    margin-bottom: 2rem;
+    margin-bottom: 1rem;
     background-color: #bc882f;
     border: 0.1rem solid rgba(255, 174, 0, 0.651);
+}
+
+/* Invitation image */
+
+.modal {
+    display: block; /* Hidden by default */
+    position: fixed; /* Stay in place */
+    z-index: 999; /* Sit on top */
+    padding-top: 2rem; /* Location of the box */
+    left: 0;
+    top: 0;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+    overflow: auto; /* Enable scroll if needed */
+    background-color: rgb(0,0,0); /* Fallback color */
+    background-color: rgba(0,0,0,0.9); /* Black w/ opacity */
+}
+
+/* Modal Content (image) */
+.modal-content {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+}
+
+/* Caption of Modal Image
+#caption {
+    margin: auto;
+    display: block;
+    width: 80%;
+    max-width: 700px;
+    text-align: center;
+    color: #ccc;
+    padding: 10px 0;
+    height: 150px;
+} */
+
+/* Add Animation */
+.modal-content, #caption {  
+    -webkit-animation-name: zoom;
+    -webkit-animation-duration: 0.6s;
+    animation-name: zoom;
+    animation-duration: 0.6s;
+}
+
+@-webkit-keyframes zoom {
+    from {-webkit-transform:scale(0)} 
+    to {-webkit-transform:scale(1)}
+}
+
+@keyframes zoom {
+    from {transform:scale(0)} 
+    to {transform:scale(1)}
+}
+
+/* The Close Button */
+.close {
+    position: absolute;
+    top: 15px;
+    right: 35px;
+    color: #f1f1f1;
+    font-size: 5rem;
+    width: 5rem;
+    height: 5rem;
+    font-weight: bold;
+    transition: 0.3s;
+    background-color: #A97B2B;
+    border-radius: 1000rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.close:hover,
+.close:focus {
+    background-color: #77571f;
+    text-decoration: none;
+    cursor: pointer;
+}
+
+/* 100% Image Width on Smaller Screens */
+@media only screen and (max-width: 700px){
+    .modal-content {
+        width: 100%;
+    }
+    .close{
+        width: 4rem;
+        height: 4rem;
+        top: auto;
+        bottom: 1rem;
+        right: 1rem;
+    }
 }
 
 @media screen and (max-width: 480px) {

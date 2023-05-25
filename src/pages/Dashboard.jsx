@@ -13,13 +13,11 @@ import Select from 'react-select'
 import JSConfetti from 'js-confetti'
 // Assets
 import ncsLogo from '../assets/ncs-logo.png'
-import inviteCard from '../assets/invite.png'
 import '../styles/dashboard.css'
 
 import {reset, addUsers} from '../database/dbOps'
 
 export default function Dashboard(){
-    // addUsers()
     // reset()
     React.useEffect(()=>{
         console.log("finished loading page")
@@ -51,6 +49,8 @@ export default function Dashboard(){
     )
 
     const [allUsers, setAllUsers] = React.useState([])
+    const [inviteVisible, setInviteVisible] = React.useState(true)
+    const [inviteCard, setInviteCard] = React.useState(null)
     const navigate = useNavigate();
 
     //If the user logs out redirect to login page
@@ -66,6 +66,20 @@ export default function Dashboard(){
                 });}, 1)
         }
     }, [user]);
+
+    const fetchImage = async () => {
+        try {
+            const response = await import(`../assets/invitations/\
+${(((userData.username).split(" "))[0]).toLowerCase()}.png`)
+            setInviteCard(response.default)
+        } catch (err) {
+            setInviteCard(err)
+        }
+    }
+
+    React.useEffect(() => {
+        fetchImage()
+    }, [userData.username])
 
     async function getUserData(){
         const dbUserRef = collection(db, "userData")
@@ -87,8 +101,9 @@ export default function Dashboard(){
         if(loading){
             return;
         }
-        if(user)
+        if(user){
             getUserData()
+        }
     }, [user])
 
     function handleLogout(){
@@ -449,7 +464,7 @@ export default function Dashboard(){
             }
         }
         else{
-            toast.error("Correct Guess", {
+            toast.error("Wrong Guess", {
                 toastif
             });
             setUserData(prev => (
@@ -489,7 +504,21 @@ export default function Dashboard(){
         }))
     }
 
+    function viewInvitation(){
+        const jsConfetti = new JSConfetti()
+        if(!inviteCard)
+            fetchImage()
+        setInviteVisible(true)
+        jsConfetti.addConfetti({
+            emojis : ["🌟", "💫"],
+            emojiSize : `${(/Android|webOS|iPhone|iPad|iPod|BlackBerry|BB|PlayBook|IEMobile|Windows Phone|Kindle|Silk|Opera Mini/i.test(navigator.userAgent))?100:150}`,
+            confettiNumber : 15
+        })
+    }
+
     function getInvitation(){
+        if(!inviteCard)
+            fetchImage()
         if(userData.guessed1){
             try{
                 saveAs(inviteCard, "Farewell2k23");
@@ -511,6 +540,10 @@ export default function Dashboard(){
         else{
             window.location.reload();
         }
+    }
+
+    function closeInvite(){
+        setInviteVisible(false)
     }
 
     // map available users to display as a dropdown disable unavailable users
@@ -554,6 +587,12 @@ export default function Dashboard(){
 -----------------------------------------------------------------------------------------------------------
 */
         <div className='pageContainer'>
+
+            {(userData.guessed1 && userData.guessed2 && inviteVisible) && <div id="myModal" className="modal">
+                <span className="close" onClick={closeInvite}>&times;</span>
+                <img src = {inviteCard} className="modal-content" id="img01"/>
+            </div>}
+            
             <ToastContainer
                 limit={1}
                 transition={Slide}
@@ -568,11 +607,13 @@ export default function Dashboard(){
                 pauseOnHover
                 theme="dark"
             />
+
             <div className='logoContainer'>
             <a href="https://hackncs.in/">
                 <img className="ncsLogo" src={ncsLogo} alt="Nibble Computer Society Logo"/>
             </a>
             </div>
+
             <div className='dashboardContainer'>
                 <div className='rightContainer'>
                     <div className='container profileContainer'>
@@ -587,7 +628,8 @@ ${  ((userData.username === names[0]) ||
                         <p className='username'>{userData.username}</p>
                         <button className="button" onClick={handleLogout}>logout</button>
                         <div className='inviteContainer'>
-                            {(userData.guessed1 && userData.guessed2) && <button className="button inviteButton" onClick={getInvitation}>Invitation</button>}
+                            {(userData.guessed1 && userData.guessed2) && <button className="button inviteButton" onClick={viewInvitation}>View Invitation</button>}
+                            {(userData.guessed1 && userData.guessed2) && <button className="button inviteButton" onClick={getInvitation}>Download Invitation</button>}
                             {(userData.numGuess1 === 0 || userData.numGuess2 === 0) && 
                             <p className="container notInvited">You failed to guess both the senders</p>}
                         </div>
