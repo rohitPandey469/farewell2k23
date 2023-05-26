@@ -494,7 +494,6 @@ ${(((userData.username).split(" "))[0]).toLowerCase()}.png`)
             ...prev,
             [event.name] : event.value,
         }))
-        console.log(userData)
     }
 
     function handleChangeRecieveSelect(event){
