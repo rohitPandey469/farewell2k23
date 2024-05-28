@@ -1,65 +1,82 @@
-.splashContainer{
-    height: 100%; 
-    width: 100%;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    align-self: center;
-    gap: 4rem;
-    padding: 1rem;
-    cursor: pointer;
+.splashContainer {
+  height: 100%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  align-self: center;
+  gap: 4rem;
+  padding: 1rem;
+  cursor: pointer;
 }
 
-.upperHalf{
-    height: 50vh;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: space-between;
-    padding-top: 2rem;
+.upperHalf {
+  height: 50vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 2rem;
 }
 
-.greetings-container{
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
-    gap: 1rem;
+.greetings-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2rem;
 }
 
-.ncsLogo{
-    width: 120px;
-    height: auto;
+.ncsLogo {
+  width: 120px;
+  height: auto;
 }
 
-.welcomeText{
-    font-family: 'Caudex';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 45px;
-    text-transform: uppercase;
-    background: linear-gradient(180deg, #ECCE88 31.15%, #C8A368 42.71%, #C29C75 55.38%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: 8px 18px 8px rgba(0, 0, 0, 0.25);
+.welcome {
+  width: 26.80444rem;
+  height: 5.27588rem;
+  flex-shrink: 0;
+  overflow: hidden;
+}
+.welcome img {
+  width: 100%;
+  height: 100%;
 }
 
-.farewellText{
-    font-family: 'Caudex';
-    font-style: normal;
-    font-weight: 700;
-    font-size: 4.375rem;
-    letter-spacing: 0.06em;
-    text-transform: uppercase;
-    background: linear-gradient(180deg, #DDBF86 31.15%, #A57B4C 55.38%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
-    text-shadow: 0px 4px 4px rgba(0, 0, 0, 0.25), 8px 18px 8px rgba(0, 0, 0, 0.25);
-    text-align: center;
+.farewell {
+  width: 50.68138rem;
+  height: 20.555rem;
+  flex-shrink: 0;
+  overflow: hidden;
 }
 
+.farewell img {
+  width: 100%;
+  height: 100%;
+}
+
+.greetings-container button {
+  width: 23.88169rem;
+  height: 4.33356rem;
+  flex-shrink: 0;
+  border-radius: 0.75369rem;
+  border: 1.507px solid #000;
+  background: #c00;
+  width: 23.88169rem;
+  height: 4.33356rem;
+  flex-shrink: 0;
+}
+
+.greetings-container button p {
+  color: #fff;
+  -webkit-text-stroke-width: 1.50732421875;
+  -webkit-text-stroke-color: #000;
+  font-family: "Action Comics Black";
+  font-size: 1.00488rem;
+  font-style: normal;
+  font-weight: 400;
+  line-height: normal;
+}
 /* .clickText{
     position : absolute;
     bottom: 2.5rem;
@@ -71,25 +88,29 @@
 } */
 
 @media screen and (max-width: 900px) {
-    .welcomeText {
-      font-size: 2.5rem;
-    }
-    .farewellText{
-        font-size: 3.5rem;
-    }
-    /* .clickText{
+  .welcome {
+    width: 15rem;
+    height: 3rem;
+  }
+  .farewell {
+    width: 40rem;
+    height: 16rem;
+  }
+  /* .clickText{
         bottom: 5rem;
     } */
 }
 
 @media screen and (max-width: 480px) {
-    .welcomeText {
-      font-size: 2rem;
-    }
-    .farewellText{
-        font-size: 3rem;
-    }
-    /* .clickText{
+  .welcome {
+    width: 10rem;
+    height: 2rem;
+  }
+  .farewell {
+    width: 20rem;
+    height: 8rem;
+  }
+  /* .clickText{
         bottom: 8rem;
         width: 60vw;
     } */

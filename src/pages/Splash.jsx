@@ -2,6 +2,8 @@ import React from 'react'
 import { useNavigate } from "react-router-dom";
 import '../styles/splash.css'
 import ncsLogo from '../assets/ncs-logo.png'
+import welcome from "../assets/home/WELCOME.png"
+import farewell from "../assets/home/farewell.png"
 import {toastif} from "../../firebase"
 import { ToastContainer, toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
@@ -63,8 +65,9 @@ export default function Splash(){
                     <img className="ncsLogo" src={ncsLogo} alt="Nibble Computer Society Logo"/>
                 </a>
                 <div className='greetings-container'>
-                    <h1 className='welcomeText'>Welcome</h1>
-                    <h2 className='farewellText'>Farewell 2k23</h2>
+                    <div className='welcome'><img src={welcome} alt="" /></div>
+                    <div className='farewell'><img src={farewell} alt="" /></div>
+                    <button><p>LET’S GET STARTED</p></button>
                 </div>
             </div>
         </div>
