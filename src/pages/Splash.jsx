@@ -34,6 +34,7 @@ export default function Splash(){
     }, [])
     function handleClick(){
         start()
+        // start animation
         toast.dismiss();
         navigate("/login"); 
     }
@@ -45,7 +46,7 @@ export default function Splash(){
 -----------------------------------------------------------------------------------------------------------
 */
 
-            <div className = "splashContainer" onClick={handleClick}>
+            <div className = "splashContainer" >
                 <ToastContainer
                     limit={1}
                     transition={Slide}
@@ -67,7 +68,7 @@ export default function Splash(){
                 <div className='greetings-container'>
                     <div className='welcome'><img src={welcome} alt="" /></div>
                     <div className='farewell'><img src={farewell} alt="" /></div>
-                    <button><p>LET’S GET STARTED</p></button>
+                    <button onClick={handleClick}><p>LET’S GET STARTED</p></button>
                 </div>
             </div>
         </div>

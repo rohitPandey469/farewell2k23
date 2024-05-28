@@ -1,4 +1,4 @@
-@font-face {
+/* @font-face {
   font-family: 'gilroy-bold';
   src: url('../assets/fonts/Gilroy-ExtraBold.otf');
 }
@@ -6,23 +6,28 @@
 @font-face {
   font-family: 'gilroy-light';
   src: url('../assets/fonts/Gilroy-Light.otf');
-}
+} */
 
 body {
-  background: url('../assets/bg.png');
   background-color: #28282e;
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-position: center;
-  position: fixed;
-  width: 100vw;
-  height: 100vh;
   display: flex;
   flex-direction: column;
   align-items: center;
-  overflow-y: hidden;
+  overflow-x:hidden;
   /* color: white; */
-  font-family: gilroy-light;
+  /* font-family: gilroy-light; */
+}
+
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: url('../assets/bg.png') center center / cover no-repeat;
+  z-index: -1; /* Make sure the background image stays behind the content */
+  background-attachment: fixed;
 }
 
 /* @media screen and (max-width: 480px) {

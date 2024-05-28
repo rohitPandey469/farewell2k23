@@ -1,35 +1,30 @@
 import { initializeApp } from "firebase/app";
 
-import {
-  getAuth,
-  signInWithEmailAndPassword,
-  signOut,
-} from "firebase/auth";
+import { getAuth, signInWithEmailAndPassword, signOut } from "firebase/auth";
 
-import {toast, Slide } from 'react-toastify';
-import 'react-toastify/dist/ReactToastify.css';
+import { toast, Slide } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
-import {
-  getFirestore,
-} from "firebase/firestore";
+import { getFirestore } from "firebase/firestore";
 
-import alertify from 'alertifyjs';
-import 'alertifyjs/build/css/alertify.css';
+import alertify from "alertifyjs";
+import "alertifyjs/build/css/alertify.css";
 
-alertify.set('notifier','position', 'top-center');
+alertify.set("notifier", "position", "top-center");
 
 const firebaseConfig = {
-    apiKey: "AIzaSyDTzAIC5axUGofr_z8LIvmtzOvWHd_ZTO0",
-    authDomain: "farewell2k23-89220.firebaseapp.com",
-    projectId: "farewell2k23-89220",
-    storageBucket: "farewell2k23-89220.appspot.com",
-    messagingSenderId: "517078897756",
-    appId: "1:517078897756:web:866f5b88e9f975b570c299",
-    measurementId: "G-MWXDJQ0MKV"
+  apiKey: "AIzaSyCTj30aB-zOi4ZB4bggh7uacNj6lD5PH8s",
+  authDomain: "codelabz-303fb.firebaseapp.com",
+  databaseURL: "https://codelabz-303fb-default-rtdb.firebaseio.com",
+  projectId: "codelabz-303fb",
+  storageBucket: "codelabz-303fb.appspot.com",
+  messagingSenderId: "986277623752",
+  appId: "1:986277623752:web:e69a68423e12d0d70ab2fd",
+  measurementId: "G-HVPYX6X7NM",
 };
 
 const toastif = {
-  transition : Slide,
+  transition: Slide,
   position: "top-center",
   autoClose: 1000,
   hideProgressBar: true,
@@ -38,50 +33,44 @@ const toastif = {
   draggable: true,
   progress: undefined,
   theme: "dark",
-}
+};
 
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
 const logInWithEmailAndPassword = async (email, password) => {
-  try{
+  try {
     signInWithEmailAndPassword(auth, email, password)
       .then()
-      .catch(error => {
-        switch(error.code) {
-          case 'auth/user-not-found':
-            toast.error('User not found!!', {
-              toastif
-              });
-            break;
-          case 'auth/wrong-password':
-            toast.error('Wrong passoword!', {
-              toastif
-              });
-            break;
-          default: 
-            toast.error('No Internet', {
-              toastif
+      .catch((error) => {
+        switch (error.code) {
+          case "auth/user-not-found":
+            toast.error("User not found!!", {
+              toastif,
             });
-       }
-     })
-   }catch(err){
-      toast.error('No Internet', {
-        toastif
+            break;
+          case "auth/wrong-password":
+            toast.error("Wrong passoword!", {
+              toastif,
+            });
+            break;
+          default:
+            toast.error("No Internet", {
+              toastif,
+            });
+        }
       });
-      console.log("Error : ", err);
-   }
+  } catch (err) {
+    toast.error("No Internet", {
+      toastif,
+    });
+    console.log("Error : ", err);
+  }
 };
 
 const logout = () => {
   signOut(auth);
 };
 
-export {
-  auth,
-  db,
-  logInWithEmailAndPassword,
-  logout,
-  toastif
-};
+export { auth, db, logInWithEmailAndPassword, logout, toastif };
