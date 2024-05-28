@@ -53,16 +53,15 @@ h1, h2, p{
 }
 
 ::placeholder { /* Chrome, Firefox, Opera, Safari 10.1+ */
-  color: rgb(188, 171, 148);
-  opacity: 1; /* Firefox */
+  color: #000000;
 }
 
 :-ms-input-placeholder { /* Internet Explorer 10-11 */
-  color: rgb(188, 171, 148);
+  color: #000000;
 }
 
 ::-ms-input-placeholder { /* Microsoft Edge */
-  color: rgb(188, 171, 148);
+  color: #000000;
 }
 
 .alertify-notifier .ajs-message.ajs-error{

@@ -2,8 +2,8 @@ import React from 'react'
 import { useNavigate } from "react-router-dom";
 import { auth, logInWithEmailAndPassword, toastif} from "../../firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-import '../styles/login.css'
-import ncsLogo from '../assets/ncs-logo.png'
+import '../styles/login.css';
+import welcome from "../assets/home/welcome.png";
 
 import { ToastContainer, toast, Slide } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css'; 
@@ -82,8 +82,8 @@ export default function Login(){
                 theme="dark"
             />
             <form className="loginForm" onSubmit={handleSubmit}>
-                <a href="https://hackncs.in/"><img className="ncsLogo" src={ncsLogo} alt="Nibble Computer Society Logo"/></a>
-                <h1 className='loginWelcome'>Welcome</h1>
+                <img src={welcome} className='loginWelcome' alt="welcome"/>
+                <p className='loginp'>Enter your Username and Password</p>
                 <div className='inputContainer'>
                     <input 
                         id = "email"
@@ -104,7 +104,7 @@ export default function Login(){
                         onChange = {handleChange}
                     />
                 </div>
-                <button className='loginButton'>Login</button>
+                <button className='loginButton'>Log In</button>
             </form>
         </div>
     )
